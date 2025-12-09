@@ -2,7 +2,20 @@ import 'package:flutter/material.dart';
 
 /// Women's bathroom information widget
 class WomensBathroomWidget extends StatelessWidget {
-  const WomensBathroomWidget({super.key});
+  final String location;
+
+  const WomensBathroomWidget({super.key, required this.location});
+
+  String _getImagePath() {
+    if (location.contains('141') || location.contains('145')) {
+      return 'Bathroom-1-145.jpg';
+    } else if (location.contains('Floor 2') || location.contains('276')) {
+      return 'Bathroom-2-276.jpg';
+    } else if (location.contains('Floor 3') || location.contains('330')) {
+      return 'Bathroom-3-330.jpg';
+    }
+    return 'Bathroom-2-276.jpg';
+  }
 
   @override
   Widget build(BuildContext context) {
@@ -25,17 +38,25 @@ class WomensBathroomWidget extends StatelessWidget {
                     alignment: AlignmentDirectional(0, -0.8),
                     child: Padding(
                       padding: EdgeInsets.all(8),
-                      child: Container(
-                        width: 300,
-                        height: 280,
-                        decoration: BoxDecoration(
-                          color: Colors.pink.shade100,
-                          borderRadius: BorderRadius.circular(8),
-                        ),
-                        child: Icon(
-                          Icons.woman,
-                          size: 120,
-                          color: Colors.pink.shade700,
+                      child: ClipRRect(
+                        borderRadius: BorderRadius.circular(8),
+                        child: Image.asset(
+                          _getImagePath(),
+                          width: 300,
+                          height: 280,
+                          fit: BoxFit.cover,
+                          errorBuilder: (context, error, stackTrace) {
+                            return Container(
+                              width: 300,
+                              height: 280,
+                              color: Colors.pink.shade100,
+                              child: Icon(
+                                Icons.woman,
+                                size: 80,
+                                color: Colors.pink.shade700,
+                              ),
+                            );
+                          },
                         ),
                       ),
                     ),
@@ -45,7 +66,7 @@ class WomensBathroomWidget extends StatelessWidget {
                     child: Padding(
                       padding: EdgeInsets.symmetric(horizontal: 16),
                       child: Text(
-                        'Women\'s Restroom\n\nLocated throughout the building\nfor student and faculty use.',
+                        'Women\'s Restroom\n\n$location\n\nAvailable for student and faculty use.',
                         textAlign: TextAlign.center,
                         style: TextStyle(
                           fontSize: 20,

@@ -188,13 +188,13 @@ class _InteractiveMapState extends State<InteractiveMap> {
   final TransformationController _transformationController =
       TransformationController();
 
-  // Bathroom locations - you can adjust x and y positions
+  // Bathroom locations 
   List<BathroomPin> _getBathroomPins() {
     if (widget.floorNumber == 2) {
       return [
-        BathroomPin(x: 0.6, y: 0.28, label: 'Men\'s', type: BathroomType.mens),
+        BathroomPin(x: 0.55, y: 0.40, label: 'Men\'s', type: BathroomType.mens),
         BathroomPin(
-          x: 0.65,
+          x: 0.55,
           y: 0.32,
           label: 'Women\'s',
           type: BathroomType.womens,
@@ -202,11 +202,45 @@ class _InteractiveMapState extends State<InteractiveMap> {
       ];
     } else if (widget.floorNumber == 1) {
       return [
-        BathroomPin(x: 0.5, y: 0.5, label: 'Men\'s', type: BathroomType.mens),
+        // Bathroom near room 125
+        BathroomPin(
+          x: 0.50,
+          y: 0.55,
+          label: 'Men\'s - Near Room 125',
+          type: BathroomType.mens,
+        ),
+        BathroomPin(
+          x: 0.5,
+          y: 0.45,
+          label: 'Women\'s - Near Room 125',
+          type: BathroomType.womens,
+        ),
+        // Bathroom near room 141 (bottom left)
+        BathroomPin(
+          x: 0.15,
+          y: 0.75,
+          label: 'Men\'s - Near Room 141',
+          type: BathroomType.mens,
+        ),
+        BathroomPin(
+          x: 0.2,
+          y: 0.80,
+          label: 'Women\'s - Near Room 141',
+          type: BathroomType.womens,
+        ),
+      ];
+    } else if (widget.floorNumber == 3) {
+      return [
         BathroomPin(
           x: 0.55,
-          y: 0.5,
-          label: 'Women\'s',
+          y: 0.4,
+          label: 'Men\'s - Floor 3',
+          type: BathroomType.mens,
+        ),
+        BathroomPin(
+          x: 0.55,
+          y: 0.3,
+          label: 'Women\'s - Floor 3',
           type: BathroomType.womens,
         ),
       ];
@@ -214,12 +248,12 @@ class _InteractiveMapState extends State<InteractiveMap> {
     return [];
   }
 
-  // Facility locations - you can adjust x and y positions
+  // Facility locations 
   List<FacilityPin> _getFacilityPins() {
     if (widget.floorNumber == 2) {
       return [
         FacilityPin(
-          x: 0.5,
+          x: 0.65,
           y: 0.5,
           label: 'Vending Machines',
           type: FacilityType.vendingMachine,
@@ -232,7 +266,7 @@ class _InteractiveMapState extends State<InteractiveMap> {
         ),
         FacilityPin(
           x: 0.75,
-          y: 0.3,
+          y: 0.27,
           label: 'Printer',
           type: FacilityType.printer2,
         ),
@@ -240,8 +274,8 @@ class _InteractiveMapState extends State<InteractiveMap> {
     } else if (widget.floorNumber == 3) {
       return [
         FacilityPin(
-          x: 0.5,
-          y: 0.4,
+          x: 0.82,
+          y: 0.3,
           label: 'Printer',
           type: FacilityType.printer3,
         ),
@@ -261,17 +295,14 @@ class _InteractiveMapState extends State<InteractiveMap> {
     return Center(
       child: LayoutBuilder(
         builder: (context, constraints) {
-          // Calculate 3:2 aspect ratio dimensions
           final maxWidth = constraints.maxWidth * 0.95;
           final maxHeight = constraints.maxHeight * 0.95;
 
           double mapWidth, mapHeight;
           if (maxWidth / maxHeight > 3 / 2) {
-            // Height is the constraint
             mapHeight = maxHeight;
             mapWidth = mapHeight * 3 / 2;
           } else {
-            // Width is the constraint
             mapWidth = maxWidth;
             mapHeight = mapWidth * 2 / 3;
           }
@@ -412,8 +443,8 @@ class BathroomPinWidget extends StatelessWidget {
           child: Padding(
             padding: MediaQuery.of(context).viewInsets,
             child: pin.type == BathroomType.mens
-                ? MensBathroomWidget()
-                : WomensBathroomWidget(),
+                ? MensBathroomWidget(location: pin.label)
+                : WomensBathroomWidget(location: pin.label),
           ),
         );
       },

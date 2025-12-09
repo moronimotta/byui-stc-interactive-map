@@ -2,7 +2,20 @@ import 'package:flutter/material.dart';
 
 /// Men's bathroom information widget
 class MensBathroomWidget extends StatelessWidget {
-  const MensBathroomWidget({super.key});
+  final String location;
+
+  const MensBathroomWidget({super.key, required this.location});
+
+  String _getImagePath() {
+    if (location.contains('141') || location.contains('145')) {
+      return 'Bathroom-1-145.jpg';
+    } else if (location.contains('Floor 2') || location.contains('252')) {
+      return 'Bathroom-2-252.jpg';
+    } else if (location.contains('Floor 3') || location.contains('330')) {
+      return 'Bathroom-3-330.jpg';
+    }
+    return 'Bathroom-2-252.jpg';
+  }
 
   @override
   Widget build(BuildContext context) {
@@ -25,17 +38,25 @@ class MensBathroomWidget extends StatelessWidget {
                     alignment: AlignmentDirectional(0, -0.8),
                     child: Padding(
                       padding: EdgeInsets.all(8),
-                      child: Container(
-                        width: 300,
-                        height: 280,
-                        decoration: BoxDecoration(
-                          color: Colors.blue.shade100,
-                          borderRadius: BorderRadius.circular(8),
-                        ),
-                        child: Icon(
-                          Icons.man,
-                          size: 120,
-                          color: Colors.blue.shade700,
+                      child: ClipRRect(
+                        borderRadius: BorderRadius.circular(8),
+                        child: Image.asset(
+                          _getImagePath(),
+                          width: 300,
+                          height: 280,
+                          fit: BoxFit.cover,
+                          errorBuilder: (context, error, stackTrace) {
+                            return Container(
+                              width: 300,
+                              height: 280,
+                              color: Colors.blue.shade100,
+                              child: Icon(
+                                Icons.man,
+                                size: 80,
+                                color: Colors.blue.shade700,
+                              ),
+                            );
+                          },
                         ),
                       ),
                     ),
@@ -45,7 +66,7 @@ class MensBathroomWidget extends StatelessWidget {
                     child: Padding(
                       padding: EdgeInsets.symmetric(horizontal: 16),
                       child: Text(
-                        'Men\'s Restroom\n\nLocated throughout the building\nfor student and faculty use.',
+                        'Men\'s Restroom\n\n$location\n\nAvailable for student and faculty use.',
                         textAlign: TextAlign.center,
                         style: TextStyle(
                           fontSize: 20,
